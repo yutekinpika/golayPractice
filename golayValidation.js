@@ -1,4 +1,4 @@
-import { FieldF4 } from './FieldF4.js'; // 'FieldF4.js' をインポート
+import { FieldF4 } from './parts/FieldF4/FieldF4.js'; // 'FieldF4.js' をインポート
 
 class GolayValidation {
   // 重みつき和を求める関数
