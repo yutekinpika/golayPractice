@@ -55,7 +55,15 @@ export class FieldF4 {
 		default: return "";
 	  }
 	}
-  }
+
+    // 引数としてFieldF4型を受け取り、valueが一致するかチェックするメソッド
+    isEqual(other) {
+        if (other instanceof FieldF4) {
+            return this.value === other.value;
+        }
+        return false;
+    }
+}
 //   // 使用例
 //   let zero = new FieldF4(0);  // 0
 //   let one = new FieldF4(1);   // 1
