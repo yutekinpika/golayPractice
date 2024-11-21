@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ボタンと説明のリスト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .message {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button-item {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+        }
+
+        .button-item button {
+            margin-right: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .button-item p {
+            margin: 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="message" id="message">
+            下記の4つのうち1つを選んでください
+        </div>
+
+        <div class="button-container">
+            <div class="button-item">
+                <button onclick="updateContent('ボタン1', 'ボタン1の詳細説明')">ボタン1</button>
+                <p id="desc1">ボタン1の説明文</p>
+            </div>
+            <div class="button-item">
+                <button onclick="updateContent('ボタン2', 'ボタン2の詳細説明')">ボタン2</button>
+                <p id="desc2">ボタン2の説明文</p>
+            </div>
+            <div class="button-item">
+                <button onclick="updateContent('ボタン3', 'ボタン3の詳細説明')">ボタン3</button>
+                <p id="desc3">ボタン3の説明文</p>
+            </div>
+            <div class="button-item">
+                <button onclick="updateContent('ボタン4', 'ボタン4の詳細説明')">ボタン4</button>
+                <p id="desc4">ボタン4の説明文</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+
+</body>
+
+</html>
