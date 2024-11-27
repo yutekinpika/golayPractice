@@ -1,3 +1,6 @@
+import { FieldF4 } from './FieldF4.js'; // FieldF4クラスをインポート
+import { hexaCodeUtil } from './hexaCodeUtil.js';
+
 // ボタンがクリックされたときにメッセージと説明を更新する関数
 function updateContent(buttonName, description) {
     // メッセージの内容を更新
@@ -32,7 +35,7 @@ function shuffleArray(array) {
 function toBase4Array() {
     const base4Array = [];
 
-    // 1〜60までの数を4進数に変換して3桁になるように0埋めして配列に格納
+    // 1〜52までの数を4進数に変換して3桁になるように0埋めして配列に格納
     for (let i = 1; i <= 52; i++) {
         const base4 = i.toString(4);  // 数字を4進数に変換
         const paddedBase4 = base4.padStart(3, '0');  // 3桁に0埋め
@@ -42,10 +45,12 @@ function toBase4Array() {
     return base4Array;
 }
 
+const hexUtil = new hexaCodeUtil();
 // 結果を取得
 const base4Numbers = toBase4Array();
 // ランダムな配列を取得
-let randomBase4Numbers = shuffleArray(base4Numbers);
+const shuffledNumbers = shuffleArray(base4Numbers);
+let randomBase4Numbers = shuffledNumbers.map(x => hexUtil.encodeFromInt(x));
 console.log(randomBase4Numbers);
 
 function createCardMapping() {
@@ -69,4 +74,4 @@ function createCardMapping() {
 
 // 結果を取得
 const cardMapping = createCardMapping();
-console.log(cardMapping);
+console.log(shuffledNumbers.map(i => cardMapping[i]));
