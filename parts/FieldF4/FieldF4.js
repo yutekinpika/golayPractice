@@ -38,9 +38,9 @@ export class FieldF4 {
 		}
 		const divisionTable = [
 		  [undefined, 0, 0, 0],  // 0 / { 1, w, wb} = 0
-		  [undefined, 1, 2, 3],  // 1 / { 1, w, wb} = { 1, wb, w}
-		  [undefined, 2, 3, 1],  // w / { 1, w, wb} = { w, 1, wb}
-		  [undefined, 3, 1, 2]   // wb / { 1, w, wb} = { wb, w, 1}
+		  [undefined, 1, 3, 2],  // 1 / { 1, w, wb} = { 1, wb, w}
+		  [undefined, 2, 1, 3],  // w / { 1, w, wb} = { w, 1, wb}
+		  [undefined, 3, 2, 1]   // wb / { 1, w, wb} = { wb, w, 1}
 		];
 		return new FieldF4(divisionTable[this.value][other.value]);
 	  }
