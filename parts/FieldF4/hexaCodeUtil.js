@@ -19,15 +19,12 @@ export class hexaCodeUtil {
         return arr;
     }
 
-    encodeFromInt2(n){
-        n = n%64; // 63以下の数字に直す
-        const base4 = n.toString(4).padStart(3, '0'); // 数字を4進数に変換、および0埋め
-        let arr = base4.split('').map(x => new FieldF4( parseInt(x, 10))); // 最初の3桁を4元体の値に変換する
-        // // 残りの桁をundefinedで埋めて、3点問題に渡す
-        arr.push(undefined);
-        arr.push(undefined);
-        arr.push(undefined);
-        return this.solve3points(arr);
+    decodeToInt(arr){
+        let ret = 0;
+        ret += arr[0].value*4*4;
+        ret += arr[1].value*4;
+        ret += arr[2].value;
+        return ret;
     }
 
     /**
