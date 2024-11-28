@@ -6,6 +6,15 @@ export class HexaCodeUtil {
 	}
 
     /**
+     * 数値からF4ベクトルへの変換
+     * @param {*} v 整数の配列
+     * @returns vの各要素をFieldF4に変換した配列
+     */
+    numVec2F4vec(v){
+        return v.map(x => new FieldF4(x));
+    }
+
+    /**
      * 整数からヘキサ符号への符号化
      * @param {*} n 整数（0~63を想定）
      * @returns nをヘキサ符号化したもの
@@ -40,6 +49,10 @@ export class HexaCodeUtil {
      * @returns 入力vを最大1桁誤り訂正したもの
      */
     solve5points(v) {
+        // 配列の長さが6未満なら、6になるまでundefinedを追加
+        while (v.length < 6) {
+            v.push(undefined);
+        }
         // vのundefinedの元が1個以下であることをチェック
         let undefinedCount = v.filter(x => x === undefined).length;
         if (undefinedCount > 1) {
@@ -50,7 +63,7 @@ export class HexaCodeUtil {
         let v12 = [...v];
         v12[0] = undefined;
         v12[1] = undefined;
-        if(v.filter(x => x === undefined).length !== 3){
+        if(v12.filter(x => x === undefined).length !== 3){
             v12[4] = undefined;
         }
         // 誤りが1か所以下ならそれを解とみなす
@@ -63,7 +76,7 @@ export class HexaCodeUtil {
         let v34 = [...v];
         v34[2] = undefined;
         v34[3] = undefined;
-        if(v.filter(x => x === undefined).length !== 3){
+        if(v34.filter(x => x === undefined).length !== 3){
             v34[5] = undefined;
         }
         // 誤りが1か所以下ならそれを解とみなす
@@ -76,7 +89,7 @@ export class HexaCodeUtil {
         let v56 = [...v];
         v56[4] = undefined;
         v56[5] = undefined;
-        if(v.filter(x => x === undefined).length !== 3){
+        if(v56.filter(x => x === undefined).length !== 3){
             v56[0] = undefined;
         }
         // 誤りが1か所以下ならそれを解とみなす
