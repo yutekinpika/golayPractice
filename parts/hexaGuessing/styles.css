@@ -1,0 +1,83 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* ボタンを縦に並べるためのラッパー */
+.button-wrapper {
+    display: flex;         /* フレックスボックスを使用 */
+    align-items: center;   /* 縦方向で中央に揃える */
+    margin: 10px 0;        /* 上下のマージンを設定 */
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* 共通のボタンスタイル */
+button.action-btn {
+    width: 150px;  /* ボタンの幅を固定 */
+    height: 50px;  /* ボタンの高さを固定 */
+    font-size: 16px;  /* フォントサイズを設定 */
+    margin: 5px;  /* ボタン間のスペース */
+    cursor: pointer;  /* ポインターカーソルを表示 */
+    border: none;  /* ボタンの境界線を消す */
+    background-color: #4CAF50;  /* ボタンの背景色 */
+    color: white;  /* ボタンの文字色 */
+    border-radius: 5px;  /* ボタンの角を丸くする */
+    transition: background-color 0.3s;  /* ホバー時の背景色変化に遷移効果 */
+}
+
+/* ホバー時の背景色を変更 */
+button.action-btn:hover {
+    background-color: #45a049;
+}
+
+/* ボタンを横並びに配置 */
+.button-container {
+    display: flex;  /* Flexboxを使用 */
+    justify-content: center;  /* ボタンを中央に配置 */
+    gap: 10px;  /* ボタンの間隔を指定 */
+}
+
+/* メッセージのスタイル */
+.message {
+    font-size: 14px;      /* メッセージのフォントサイズ */
+    color: #555;          /* メッセージの文字色 */
+    margin-left: 10px;    /* メッセージとボタンの間に隙間 */
+}

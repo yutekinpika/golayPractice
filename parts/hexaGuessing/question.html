@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import { HexaCodeUtil } from './HexaCodeUtil.js';  // HexaCodeUtilクラスのインポート
+
+        // HexaCodeUtil クラスのインスタンスを作成
+        const hexaCodeUtil = new HexaCodeUtil();
+        // 選択回数の初期化
+        let selectionCount = 0;
+        // word配列の初期化
+        let word = [];
+        // 0〜51の整数をランダムに並べ替えた配列を生成
+        const shuffledNumbers = generateShuffledNumbers();
+        // shuffledNumbersの要素をヘキサ符号化
+        const encodedShuffledNumbers = shuffledNumbers.map(x => hexaCodeUtil.encodeFromInt(x));
+        // cardMapping: 数字とトランプの柄を紐づけた連想配列
+        const cardMapping = {
+            0: '♠A', 1: '♠2', 2: '♠3', 3: '♠4', 4: '♠5', 5: '♠6', 6: '♠7', 7: '♠8', 8: '♠9', 9: '♠10', 10: '♠J', 11: '♠Q', 12: '♠K',
+            13: '♡A', 14: '♡2', 15: '♡3', 16: '♡4', 17: '♡5', 18: '♡6', 19: '♡7', 20: '♡8', 21: '♡9', 22: '♡10', 23: '♡J', 24: '♡Q', 25: '♡K',
+            26: '♣A', 27: '♣2', 28: '♣3', 29: '♣4', 30: '♣5', 31: '♣6', 32: '♣7', 33: '♣8', 34: '♣9', 35: '♣10', 36: '♣J', 37: '♣Q', 38: '♣K',
+            39: '♢A', 40: '♢2', 41: '♢3', 42: '♢4', 43: '♢5', 44: '♢6', 45: '♢7', 46: '♢8', 47: '♢9', 48: '♢10', 49: '♢J', 50: '♢Q', 51: '♢K'
+        };
+
+        // ちょうどいい範囲の整数をランダムに並べ替えた配列を生成する関数
+        function generateShuffledNumbers() {
+            // 4進数に直したときに数字がばらけるように配列を作成
+            let numbers = [];
+            for (let i = 1; i <= 13; i++) {
+                numbers.push(i);
+            }
+            for (let i = 17; i <= 29; i++) {
+                numbers.push(i);
+            }
+            for (let i = 33; i <= 45; i++) {
+                numbers.push(i);
+            }
+            for (let i = 49; i <= 61; i++) {
+                numbers.push(i);
+            }
+
+            // Fisher-Yatesアルゴリズムでシャッフル
+            for (let i = numbers.length - 1; i > 0; i--) {
+                // 0〜iの範囲でランダムなインデックスを選ぶ
+                const j = Math.floor(Math.random() * (i + 1));
+
+                // numbers[i] と numbers[j] を交換
+                [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+            }
+
+            return numbers;
+        }
+
+        // ページBを再描画する関数
+        function renderPage() {
+            const container = document.getElementById("container");
+            container.innerHTML = "";  // ページ内容をリセット
+
+            const title = document.createElement("h1");
+            title.textContent = `質問 ${selectionCount + 1}`;
+            container.appendChild(title);
+
+            const description = document.createElement("p");
+            description.textContent = "あなたのカードはどのグループにありますか？";
+            container.appendChild(description);
+
+            // 選択肢とメッセージを動的に追加
+            const options = [
+                { text: "A", message: generateOptionMessage(selectionCount, 0), value: 0 },
+                { text: "B", message: generateOptionMessage(selectionCount, 1), value: 1 },
+                { text: "C", message: generateOptionMessage(selectionCount, 2), value: 2 },
+                { text: "D", message: generateOptionMessage(selectionCount, 3), value: 3 }
+            ];
+
+            options.forEach((option, index) => {
+                const buttonWrapper = document.createElement("div");
+                buttonWrapper.classList.add("button-wrapper");
+
+                // ボタンを作成
+                const button = document.createElement("button");
+                button.classList.add("action-btn");
+                button.textContent = option.text;
+                button.onclick = () => handleSelection(option.value, option.text);  // クリック時の処理
+                buttonWrapper.appendChild(button);
+
+                // メッセージを作成
+                const message = document.createElement("span");
+                message.classList.add("message");
+                message.textContent = option.message;
+                buttonWrapper.appendChild(message);
+
+                container.appendChild(buttonWrapper);
+            });
+
+            // 回答回数が5回に達したら、ページCに遷移
+            if (selectionCount === 5) {
+
+                // word配列をsolve5pointsに渡して結果を取得
+                let vec = hexaCodeUtil.numVec2F4vec(word);
+                const correctedVec = hexaCodeUtil.solve5points(vec);
+
+                // 誤りがあったかどうかを確認
+                const num = findFirstDifference(vec, correctedVec) + 1;
+                // 復号
+                const decoded = hexaCodeUtil.decodeToInt(correctedVec);
+                // decodedのインデックスを検索
+                const index = shuffledNumbers.indexOf(decoded);
+                if (index === -1) {
+                    console.log(`${decoded} は配列に存在しません`);
+                }
+                const answer = cardMapping[index];
+
+                // ページCにパラメータを渡して遷移
+                window.location.href = `result.html?answer=${answer}&num=${num}`;
+
+                function findFirstDifference(a, b) {
+                    // 0から4番目の要素を比べる
+                    for (let i = 0; i < 5; i++) {
+                        // 異なる要素があれば、そのインデックスを返す
+                        if (a[i].value != b[i].value) {
+                            return i;
+                        }
+                    }
+                    // 異なる要素が見つからなければ -1 を返す
+                    return -1;
+                }
+            }
+
+            // 質問番号 q と選択肢番号 op に基づいて、選択肢のメッセージを生成する関数
+            function generateOptionMessage(q, op) {
+                let str = "";  // ここで最終的に生成するメッセージを格納する変数
+
+                for (let i = 0; i < encodedShuffledNumbers.length; i++) {
+                    // 乱数のq桁目が選択肢番号opに一致するかをチェック
+                    if (encodedShuffledNumbers[i][q].value == op) {
+                        str += `${cardMapping[i]} `;  // 条件を満たす場合、その番号のカードを追加
+                    }
+                }
+
+                return str;  // 生成したメッセージを返す
+            }
+        }
+
+        // 選択肢が選ばれた際の処理
+        function handleSelection(value, optionText) {
+            selectionCount++;  // 選択回数を増加
+            word.push(value);   // word配列の末尾に選択肢の値を追加
+
+            console.log("選択回数: " + selectionCount);  // コンソールに選択回数を表示
+            console.log("word配列: " + word);          // コンソールにword配列の内容を表示
+
+            // ページを再描画
+            renderPage();
+        }
+
+        // ページが読み込まれた際に、ページを再描画
+        window.onload = function () {
+            renderPage();
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id="container" class="container"></div>
+
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // ページCが表示された際にURLパラメータを取得し、表示を更新する関数
+        function updatePageContent() {
+            // URLからパラメータを取得
+            const urlParams = new URLSearchParams(window.location.search);
+            const answer = urlParams.get('answer');
+            const num = urlParams.get('num');
+
+            // ボタンコンテナを取得
+            const buttonContainer = document.querySelector('.button-container');
+
+            // パラメータが正しく取得できた場合に表示を更新
+            // TODO パラメータの許容範囲をより厳密にする
+            if (answer && num !== null) {
+                const messageElement = document.getElementById('message');
+
+                // numが0の時は特別なメッセージ
+                if (num === '0') {
+                    messageElement.innerHTML = `あなたが選んだのは「${answer}」です。<br>そして、あなたは素晴らしい正直者でした。`;
+                } else {
+                    // numが0でない場合
+                    messageElement.innerHTML = `あなたが選んだのは「${answer}」です。<br>そして、あなたは${num}回目の質問で嘘をつきました。`;
+                }
+            } else {
+                // パラメータが正しくない場合の処理
+                const messageElement = document.getElementById('message');
+                messageElement.innerHTML = "パラメータが正しく読み込めませんでした。";
+                
+                // 「はい」「いいえ」ボタンを非表示にする
+                buttonContainer.style.display = 'none';
+            }
+        }
+
+        // 「はい」ボタンが押されたときの処理
+        function handleYes() {
+            alert("大成功！！！");
+        }
+
+        // 「いいえ」ボタンが押されたときの処理
+        function handleNo() {
+            alert("噓つきは針千本飲んでください");
+        }
+
+        // ページCに必要なスクリプト（特にロジックは無し）
+        // ページAに遷移するための関数
+        function goToIndex() {
+            window.location.href = 'index.html';  // ページAに遷移
+        }
+    </script>
+</head>
+
+<body onload="updatePageContent()">
+
+    <div class="container">
+        <h1>おつかれさまでした</h1>
+        <p id="message">ここにメッセージが表示されます</p>
+
+        <!-- 「はい」「いいえ」のボタン -->
+        <div class="button-container">
+            <button class="action-btn" onclick="handleYes()">はい</button>
+            <button class="action-btn" onclick="handleNo()">いいえ</button>
+        </div>
+
+        <br>
+
+        <!-- ページAに戻るボタン -->
+        <button class="action-btn" onclick="goToIndex()">ページAへ戻る</button>
+    </div>
+
+</body>
+</html>
