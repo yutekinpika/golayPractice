@@ -1,11 +1,12 @@
 import { FieldF4 } from './FieldF4.js'; // FieldF4クラスをインポート
 import { FieldF4Matrix } from './FieldF4Matrix.js';
 
-export class hexaCodeUtil {
+export class HexaCodeUtil {
 	constructor() {
 	}
 
     /**
+     * 整数からヘキサ符号への符号化
      * @param {*} n 整数（0~63を想定）
      * @returns nをヘキサ符号化したもの
      */
@@ -19,7 +20,13 @@ export class hexaCodeUtil {
         return arr;
     }
 
+    /**
+     * ヘキサ符号から整数への復号
+     * @param {*} arr ヘキサ符号を表すベクトル
+     * @returns arrを復号した整数
+     */
     decodeToInt(arr){
+        // TODO バリデーションを入れた方がいいかも
         let ret = 0;
         ret += arr[0].value*4*4;
         ret += arr[1].value*4;
@@ -46,7 +53,7 @@ export class hexaCodeUtil {
         if(v.filter(x => x === undefined).length !== 3){
             v12[4] = undefined;
         }
-        // 均衡条件を満たしていたらそれを解とみなす
+        // 誤りが1か所以下ならそれを解とみなす
         let ans12 = this.solve3points(v12);
         if(compareArrays(v, ans12)){
             return ans12;
@@ -59,7 +66,7 @@ export class hexaCodeUtil {
         if(v.filter(x => x === undefined).length !== 3){
             v34[5] = undefined;
         }
-        // 均衡条件を満たしていたらそれを解とみなす
+        // 誤りが1か所以下ならそれを解とみなす
         let ans34 = this.solve3points(v34);
         if(compareArrays(v, ans34)){
             return ans34;
@@ -72,7 +79,7 @@ export class hexaCodeUtil {
         if(v.filter(x => x === undefined).length !== 3){
             v56[0] = undefined;
         }
-        // 均衡条件を満たしていたらそれを解とみなす
+        // 誤りが1か所以下ならそれを解とみなす
         let ans56 = this.solve3points(v56);
         if(compareArrays(v, ans56)){
             return ans56;
