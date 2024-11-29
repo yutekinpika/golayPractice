@@ -6,6 +6,7 @@
     <title>Result</title>
     <link rel="stylesheet" href="styles.css">
     <script>
+        let alreadySent = false;
         // ページCが表示された際にURLパラメータを取得し、表示を更新する関数
         function updatePageContent() {
             // URLからパラメータを取得
@@ -41,6 +42,7 @@
         // 「はい」ボタンが押されたときの処理
         function handleYes() {
             alert("大成功！！！");
+            sendData();
         }
 
         // 「いいえ」ボタンが押されたときの処理
@@ -52,6 +54,37 @@
         // ページAに遷移するための関数
         function goToIndex() {
             window.location.href = 'index.html';  // ページAに遷移
+        }
+
+        function sendData() {
+            if(alreadySent){
+                return;
+            }
+            
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // 送信するデータ
+            const data = {
+                answer: urlParams.get('answer'),
+                num: urlParams.get('num')
+            };
+
+            // APIにPOSTリクエストを送信
+            fetch('http://localhost:3000/saveData', {// TODO エンドポイントの設定
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data), // JSON形式でデータを送信
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(alreadySent = true);
         }
     </script>
 </head>
